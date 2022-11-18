@@ -1,3 +1,5 @@
+# docker run --privileged --rm tonistiigi/binfmt --install all
+
 for d in */
 do
     iv=$(echo -n $d | head -c -1)
