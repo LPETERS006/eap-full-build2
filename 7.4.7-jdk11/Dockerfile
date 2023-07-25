@@ -18,10 +18,11 @@ ENV JBOSS_IMAGE_NAME="lpeters999/eap-full-ci" \
     PRODUCT_VERSION="7.4.7" \
     EAP_HOME="/opt/jboss" \
     JBOSS_HTTP_PORT="8090" \
+    # define port offset over ENV
+    JBOSS_PORT_OFFSET="10"\
     JBOSS_HOME="/opt/jboss" \
     # define Node over ENV
     JBOSS_NODE="node1" \ 
-    #
     JBOSS_CONFIG_DIR="/opt/jboss/standalone/configuration" \
     JBOSS_DEPLOY_DIR="/opt/jboss/standalone/deployments" \
     LANG="C.UTF-8" \
@@ -36,4 +37,4 @@ RUN ${JBOSS_HOME}/bin/add-user.sh admin Admin#007 --silent
 EXPOSE 8090 10000
 #VOLUME [ "/opt/jboss/standalone/deployments", "/opt/jboss/standalone/configuration", "/opt/jboss/fr" ]
 
-ENTRYPOINT ["sh", "-c", "/opt/jboss/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 -Djboss.socket.binding.port-offset=10 -Djboss.node.name=${JBOSS_NODE}"]
+ENTRYPOINT ["sh", "-c", "/opt/jboss/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 -Djboss.socket.binding.port-offset=${JBOSS_PORT_OFFSET} -Djboss.node.name=${JBOSS_NODE}"]
