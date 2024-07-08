@@ -6,7 +6,7 @@ RUN cd /tmp/eap-build && ./build-eap8.sh && cd ./dist && unzip jboss-eap-8.0.0.z
     useradd --uid 888 -d /tmp/eap-build --shell /bin/sh -G root -m jboss && \
     chown -R 888:root /tmp/eap-build/dist/jboss-eap-8.0 && chmod 0755 /tmp/eap-build/dist/jboss-eap-8.0 && chmod -R g+rwX /tmp/eap-build/dist/jboss-eap-8.0
 
-FROM  eclipse-temurin:11-jdk-jammy
+FROM  eclipse-temurin:17-jdk-jammy
 
 ENV LANG="C.UTF-8"
 LABEL name="$JBOSS_IMAGE_NAME" version="$JBOSS_IMAGE_VERSION" architecture="amd64,arm64v8" maintainer="LPETERS999"
