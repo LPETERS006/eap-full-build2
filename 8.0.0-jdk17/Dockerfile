@@ -1,5 +1,7 @@
-FROM lpeters999/base-eap2:eclipse-temurin_17-jdk-jammy as builder
+FROM lpeters999/base-eap2:eclipse-temurin_17-jdk-jammy AS builder
 
+RUN mkdir -p /root/.m2
+COPY --chown=root:root /m2 /root/.m2
 RUN cd /tmp/eap-build && ./build-eap8.sh && cd ./dist && unzip jboss-eap-8.0.0.zip >/dev/null && cd /tmp && \ 
     git clone https://github.com/LPETERS006/eap-full-build2.git && \
     cp -R -f /tmp/eap-full-build2/8.0.0-jdk17/files/* /tmp/eap-build/dist/jboss-eap-8.0/ >/dev/null && \
@@ -22,8 +24,9 @@ ENV JBOSS_IMAGE_NAME="lpeters999/eap-full-ci" \
     JBOSS_CONFIG_DIR="/opt/jboss/standalone/configuration" \
     JBOSS_DEPLOY_DIR="/opt/jboss/standalone/deployments" \
     LANG="C.UTF-8" \
-    JAVA_OPTS="-Xms1303m -Xmx2048m -XX:MaxPermSize=1024m -XX:MetaspaceSize=256M -Djava.net.preferIPv4Stack=true --add-modules=ALL-SYSTEM"
+    JAVA_OPTS="-Xms1303m -Xmx2048m -XX:MetaspaceSize=256M -Djava.net.preferIPv4Stack=true --add-modules=ALL-SYSTEM"
 RUN mkdir -p /opt/jboss/ /opt/jboss/fr
+
 COPY --from=builder --chown=888:root /tmp/eap-build/dist/jboss-eap-8.0 /opt/jboss
 RUN useradd --uid 888 -d ${JBOSS_HOME} --shell /bin/sh -G root -m jboss && chmod +x ${JBOSS_HOME}/bin/*.sh && \
 	apt update && apt upgrade -y -f && \
